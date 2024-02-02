@@ -1,26 +1,20 @@
 package com.solides.blog.domain.entities;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
 public class Post implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -34,16 +28,21 @@ public class Post implements Serializable{
 	
 	@Column(name = "post_content", length=2000)
 	private String postContent;
+
+	private String photo;
 	
-	@Column(name = "post_image")
-	private String postImage;
-	
-	@Column(name = "post_date")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date postCreatedDate;
 	
 	@ManyToOne
+	@JoinColumn
+	@NotNull(message = "O usuário deve ser inserido")
 	private User user;
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private Set<Comment> comments= new HashSet<>();
+
+	public Post(){
+		this.postCreatedDate = new Date();
+	}
 }
