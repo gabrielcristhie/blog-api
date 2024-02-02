@@ -7,7 +7,9 @@ import com.solides.blog.DTO.UserDTO;
 import com.solides.blog.domain.entities.User;
 import com.solides.blog.repository.UserRepository;
 import com.solides.blog.service.UserService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
@@ -18,19 +20,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserDTO createUser(UserDTO userDTO) {
-		User user = this.dtoToUser(userDTO);
+		User user = modelMapper.map(userDTO, User.class);
 		User savedUser = this.userRepository.save(user);
-		return this.userToDTO(savedUser);
-	}
-	
-	public UserDTO userToDTO(User user) {
-		UserDTO userDTO = this.modelMapper.map(user, UserDTO.class);
-		return userDTO;
-	}
-
-	public User dtoToUser(UserDTO userDTO) {
-		User user = this.modelMapper.map(userDTO, User.class);
-		return user;
+		return modelMapper.map(savedUser, UserDTO.class);
 	}
 }
-
