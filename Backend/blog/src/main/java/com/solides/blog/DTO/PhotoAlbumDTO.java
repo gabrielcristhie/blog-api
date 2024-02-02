@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDTO {
-	private Long id;
-	private String name;
-	private String email;
-	private String password;
-	private String about;
+public class PhotoAlbumDTO {
+
+    private Long id;
+    private UserDTO user;
+    private String title;
+    private String description;
 }
